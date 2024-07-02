@@ -1,11 +1,13 @@
 import { ChangeEvent, FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MODELS } from '../../sample/vehicleData';
 
 const App: FC = () => {
   const [selectedMake, setSelectedMake] = useState<string>('');
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [selectedBadge, setSelectedBadge] = useState<string>('');
-  const [, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   const handleMakeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const make = event.target.value;
@@ -32,8 +34,32 @@ const App: FC = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Form submitted');
+  const handleSubmit = async () => {
+    if (!file || !selectedMake || !selectedModel || !selectedBadge) {
+      alert('Please fill out all fields and upload a file.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('make', selectedMake);
+    formData.append('model', selectedModel);
+    formData.append('badge', selectedBadge);
+    formData.append('logbook', file);
+
+    try {
+      const response = await fetch('http://localhost:3000/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        navigate('/upload', { state: { response: data } });
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Failed to upload file.');
+    }
   };
 
   const handleSelectVehicle = (make: string, model: string, badge: string) => {
@@ -79,8 +105,6 @@ const App: FC = () => {
               <input type="file" onChange={handleFileUpload} accept=".txt" />
             </div>
           </div>
-
-
 
           <button onClick={handleSubmit}>Submit</button>
         </>

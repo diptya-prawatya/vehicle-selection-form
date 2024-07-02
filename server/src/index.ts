@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
 import fs from 'fs';
-import path from 'path';
 import cors from 'cors';
 import { MODELS } from '../../sample/vehicleData';
 
@@ -21,10 +20,6 @@ interface VehicleRequest extends Request {
   };
   file?: Express.Multer.File;
 }
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
 
 app.post('/upload', upload.single('logbook'), (req: VehicleRequest, res: Response) => {
   const { make, model, badge } = req.body;
@@ -62,5 +57,3 @@ app.post('/upload', upload.single('logbook'), (req: VehicleRequest, res: Respons
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
-
-export default app;
