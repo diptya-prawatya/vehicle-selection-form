@@ -10,21 +10,18 @@ const App: FC = () => {
   const navigate = useNavigate();
 
   const handleMakeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const make = event.target.value;
-    setSelectedMake(make);
+    setSelectedMake(event.target.value);
     setSelectedModel('');
     setSelectedBadge('');
   };
 
   const handleModelChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const model = event.target.value;
-    setSelectedModel(model);
+    setSelectedModel(event.target.value);
     setSelectedBadge('');
   };
 
   const handleBadgeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const badge = event.target.value;
-    setSelectedBadge(badge);
+    setSelectedBadge(event.target.value);
   };
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -96,33 +93,28 @@ const App: FC = () => {
         </select>
       </div>
 
-      {selectedMake && selectedModel && selectedBadge &&
+      {selectedMake && selectedModel && selectedBadge && (
         <>
           <br />
           <div>
             <p>Upload Logbook: </p>
-            <div>
-              <input type="file" onChange={handleFileUpload} accept=".txt" />
-            </div>
+            <input type="file" onChange={handleFileUpload} accept=".txt" />
           </div>
-
           <button onClick={handleSubmit}>Submit</button>
         </>
-      }
+      )}
 
       <h2>Select a Vehicle</h2>
-      <>
-        <div>
-          <button onClick={() => handleSelectVehicle('Tesla', 'Model 3', 'Performance')}>
-            Tesla Model 3 Performance
-          </button>
-        </div>
-        <div>
-          <button onClick={() => handleSelectVehicle('BMW', '130d', 'xDrive 26d')}>
-            BMW 130d xDrive 26d
-          </button>
-        </div>
-      </>
+      <div>
+        <button onClick={() => handleSelectVehicle('Tesla', 'Model 3', 'Performance')}>
+          Tesla Model 3 Performance
+        </button>
+      </div>
+      <div>
+        <button onClick={() => handleSelectVehicle('BMW', '130d', 'xDrive 26d')}>
+          BMW 130d xDrive 26d
+        </button>
+      </div>
     </>
   );
 };

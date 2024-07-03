@@ -1,20 +1,29 @@
 import { FC } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Upload: FC = () => {
   const location = useLocation();
-  const { response } = location.state;
+  const navigate = useNavigate();
+  const response = location.state?.response;
+
+  if (!response) {
+    navigate('/');
+    return null;
+  }
 
   return (
-    <>
+    <div>
+      <h2>Upload Details</h2>
       <p>
-        Make: {response.make} <br />
-        Model: {response.model} <br />
-        Badge: {response.badge} <br />
+        <strong>Make:</strong> {response.make} <br />
+        <strong>Model:</strong> {response.model} <br />
+        <strong>Badge:</strong> {response.badge} <br />
       </p>
-      <p>Logbook:</p>
-      <pre>{response.logbook}</pre>
-    </>
+      <div>
+        <h3>Logbook:</h3>
+        <pre>{response.logbook}</pre>
+      </div>
+    </div>
   );
 };
 
